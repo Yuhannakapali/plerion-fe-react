@@ -1,13 +1,15 @@
 import Table from "./components/Table"
 import Modal from "./components/Modal"
 import { useState } from "react"
+import { toast } from 'react-toastify';
+
 
 function App() {
 
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
-
+    toast("Wow so easy !");
     setModalOpen(true);
   }
 
@@ -44,6 +46,7 @@ function App() {
         </div>
       </div>
       <Modal isOpen={modalOpen} toggle={toggleModal} />
+
     </>
 
 
