@@ -22,10 +22,8 @@ function Table() {
             <th className="px-6 py-3 text-left font-medium">
               Description
             </th>
-            <th className="px-6 py-3 text-left font-medium">
+            <th className="px-6 py-3 text-right font-medium">
               Actions
-            </th>
-            <th className="px-6 py-3 text-left font-medium">
             </th>
           </tr>
         </thead>
@@ -62,9 +60,6 @@ function Table() {
               <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                 published
               </span>
-            </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-              page.created_at
             </td>
             <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
               <a href="#"
@@ -107,9 +102,6 @@ function Table() {
                 Inactive
               </span>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-              page.created_at
-            </td>
             <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
               <a href="#"
                 className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline" >
@@ -151,13 +143,10 @@ function Table() {
                 draft
               </span>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-              page.created_at
-            </td>
             <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
               <a href="#"
                 className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline" >
-                delete
+                Delete
               </a>
             </td>
           </tr>
