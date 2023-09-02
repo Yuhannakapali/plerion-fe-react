@@ -16,7 +16,6 @@ function App() {
   const toggleModal = () => {
     setModalOpen(!modalOpen)
   }
-
   return (
     <>
       <div className="w-full h-screen bg-gray-100">
@@ -46,11 +45,7 @@ function App() {
         </div>
       </div>
       <Modal isOpen={modalOpen} toggle={toggleModal} />
-
     </>
-
-
-
   )
 }
 
