@@ -5,17 +5,17 @@ import { Product } from "../types/Products";
 import { ChangeEvent } from 'react';
 
 function Modal(props: ModalProps) {
-  const { isOpen, toggle } = props;
-  const [form, setForm] = useState<Product>({
+  const defaultFormValues = {
     id: '',
     name: '',
     description: '',
     price: 0,
     image_url: ''
-  });
+  }
+  const { isOpen, toggle, addProduct } = props;
+  const [form, setForm] = useState<Product>(defaultFormValues);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    console.log(e);
     const { name, value } = e.target;
     if (name === 'price') {
       setForm({ ...form, 'price': parseFloat(value) })
@@ -26,9 +26,17 @@ function Modal(props: ModalProps) {
     });
   }
 
+  const clearForm = () => {
+    setForm(defaultFormValues)
+  }
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(form);
+    // https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID
+    form.id = self.crypto.randomUUID();
+    addProduct(form);
+    clearForm()
+    toggle()
   }
 
   return (
