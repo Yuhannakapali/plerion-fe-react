@@ -18,7 +18,20 @@ function Modal(props: ModalProps) {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     if (name === 'price') {
-      setForm({ ...form, 'price': parseFloat(value) })
+      setForm({ ...form, 'price': parseFloat(value) });
+      return
+    }
+    if (name === 'image_url') {
+      const input = e.target as HTMLInputElement;
+
+      if (!input.files?.length) {
+        return;
+      }
+      const file = input.files[0];
+      const url = URL.createObjectURL(file);
+      setForm({
+        ...form, [name]: url,
+      })
       return
     }
     setForm({
