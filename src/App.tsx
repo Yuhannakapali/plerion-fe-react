@@ -62,6 +62,16 @@ function App() {
     const newProducts = products.filter(el => el.id !== selected.id);
     setProducts(newProducts)
     toggleConformationModal();
+    toast.success('Product has been Deleted sucessfully', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 
   const handleTableActions = (action: actions, data: Product) => {
@@ -86,7 +96,6 @@ function App() {
             </div>
             <div className="-mb-2 py-4 flex flex-wrap flex-grow justify-between">
               <div className="flex items-center py-2">
-                {/* <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-searcg" type="text" placeholder="Search" /> */}
               </div>
               <div className="flex items-center py-2">
                 <button
