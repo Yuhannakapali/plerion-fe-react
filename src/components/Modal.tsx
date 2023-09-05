@@ -30,9 +30,7 @@ function Modal({ isOpen, onClose, actions }: ModalProps) {
     });
   }
 
-  const clearForm = () => {
-    setForm(defaultFormValues)
-  }
+  const clearForm = () => setForm(defaultFormValues)
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
