@@ -1,43 +1,53 @@
 import Table from "./components/Table"
 import Modal from "./components/Modal"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Product } from "./types/Products";
 import { actions } from "./types/TableProps";
-import ConformationModal from "./components/conformation/ConformationModal";
-import { dummyProduct } from './defaults'
+import ConfirmationModal from "./components/conformation/ConfirmationModal";
 import { sucessNotify } from "./utils/notification";
+import Axios from "./axios";
 
 function App() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [products, setProducts] = useState<Product[]>(dummyProduct);
+  const [products, setProducts] = useState<Product[]>([]);
   const [selected, setSelected] = useState<Product>({} as Product);
-  const [conformationModalOpen, setConformationModalOpen] = useState<boolean>(false)
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState<boolean>(false)
 
-  const addProduct = (item: Product) => {
-    setProducts([...products, item]);
+  const getProducts = async () => {
+    const response = await Axios.get("/products");
+    const { data: { Items } } = response;
+    setProducts(Items)
+  };
+
+  useEffect(() => {
+    getProducts()
+  }, [])
+
+  const addProduct = async (item: Product) => {
+    await Axios.post("/products", item);
     sucessNotify("Product has been added sucessfully");
     setModalOpen(false);
+    getProducts();
   }
 
   const openModal = () => setModalOpen(true);
-
   const closeModal = () => setModalOpen(false);
+  const closeConformationModal = () => setConfirmationModalOpen(!confirmationModalOpen);
 
-  const closeConformationModal = () => setConformationModalOpen(!conformationModalOpen);
-
-
-  const deleteProduct = () => {
-    const newProducts = products.filter(el => el.id !== selected.id);
-    setProducts(newProducts)
+  const deleteProduct = async () => {
+    // const newProducts = products.filter(el => el.id !== selected.id);
+    // setProducts(newProducts)
+    await Axios.delete(`/products?id=${selected.id}`)
     sucessNotify("Product has been removed.");
     closeConformationModal();
+    getProducts()
   }
 
   const handleTableActions = (action: actions, data: Product) => {
     switch (action) {
       case "warn":
         setSelected(data);
-        setConformationModalOpen(true);
+        setConfirmationModalOpen(true);
         break;
 
       default:
@@ -73,7 +83,7 @@ function App() {
         </div>
       </div >
       <Modal isOpen={modalOpen} actions={addProduct} onClose={closeModal} />
-      <ConformationModal isOpen={conformationModalOpen} onClose={closeConformationModal} action={deleteProduct} />
+      <ConfirmationModal isOpen={confirmationModalOpen} onClose={closeConformationModal} action={deleteProduct} />
     </>
   )
 }
