@@ -1,20 +1,11 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, ChangeEvent } from "react";
 import { ModalProps } from "../types/ModalProps";
 import { Product } from "../types/Products";
+import { defaultFormValues } from "../defaults";
 
-import { ChangeEvent } from 'react';
+function Modal({ isOpen, onClose, actions }: ModalProps) {
 
-function Modal(props: ModalProps) {
-  const defaultFormValues = {
-    id: '',
-    name: '',
-    description: '',
-    price: 0,
-    image_url: ''
-  }
-  const { isOpen, toggle, addProduct } = props;
   const [form, setForm] = useState<Product>(defaultFormValues);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     if (name === 'price') {
@@ -47,9 +38,8 @@ function Modal(props: ModalProps) {
     e.preventDefault();
     // https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID
     form.id = self.crypto.randomUUID();
-    addProduct(form);
+    actions(form);
     clearForm()
-    toggle()
   }
 
   return (
@@ -72,7 +62,7 @@ function Modal(props: ModalProps) {
               <input type="file" className="w-full outline-none rounded  p-2 mt-2 mb-3" name="image_url" onChange={handleChange} accept="image/*" />
             </div>
             <div className="bg-gray-200 px-4 py-3 text-right">
-              <button type="button" onClick={toggle} className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 mr-2" ><i className="fas fa-times"></i> Cancel</button>
+              <button type="button" onClick={onClose} className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 mr-2" ><i className="fas fa-times"></i> Cancel</button>
               <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 mr-2"><i className="fas fa-plus"></i> Create</button>
             </div>
           </form>

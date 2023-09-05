@@ -1,5 +1,5 @@
 export type ConformationModalProps = {
   isOpen: boolean;
-  toggle: () => void;
+  onClose: () => void;
   action: () => void;
 };

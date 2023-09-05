@@ -1,77 +1,36 @@
 import Table from "./components/Table"
 import Modal from "./components/Modal"
-import { useState, useEffect } from "react"
-import { toast } from 'react-toastify';
+import { useState } from "react"
 import { Product } from "./types/Products";
 import { actions } from "./types/TableProps";
 import ConformationModal from "./components/conformation/ConformationModal";
-
+import { dummyProduct } from './defaults'
+import { sucessNotify } from "./utils/notification";
 
 function App() {
-
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(dummyProduct);
   const [selected, setSelected] = useState<Product>({} as Product);
   const [conformationModalOpen, setConformationModalOpen] = useState<boolean>(false)
-  useEffect(() => {
-    setProducts([
-      {
-        id: "13123123213312",
-        name: "Product1",
-        price: 10.2,
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-        image_url: 'https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80'
-      },
-      {
-        id: "131231",
-        name: "Product1",
-        price: 10.2,
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-        image_url: 'https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80'
-      },
-    ])
-  }, [])
 
   const addProduct = (item: Product) => {
-    setProducts([...products, item])
-    toast.success('Product has been add sucessfully', {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    setProducts([...products, item]);
+    sucessNotify("Product has been added sucessfully");
+    setModalOpen(false);
   }
 
-  const openModal = () => {
-    setModalOpen(true);
-  }
+  const openModal = () => setModalOpen(true);
 
-  const toggleModal = () => {
-    setModalOpen(!modalOpen)
-  }
+  const closeModal = () => setModalOpen(false);
 
-  const toggleConformationModal = () => {
-    setConformationModalOpen(!conformationModalOpen);
-  }
+  const closeConformationModal = () => setConformationModalOpen(!conformationModalOpen);
+
 
   const deleteProduct = () => {
     const newProducts = products.filter(el => el.id !== selected.id);
     setProducts(newProducts)
-    toggleConformationModal();
-    toast.success('Product has been Deleted sucessfully', {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    sucessNotify("Product has been removed.");
+    closeConformationModal();
   }
 
   const handleTableActions = (action: actions, data: Product) => {
@@ -113,8 +72,8 @@ function App() {
           </div>
         </div>
       </div >
-      <Modal isOpen={modalOpen} toggle={toggleModal} addProduct={addProduct} />
-      <ConformationModal isOpen={conformationModalOpen} toggle={toggleConformationModal} action={deleteProduct} />
+      <Modal isOpen={modalOpen} actions={addProduct} onClose={closeModal} />
+      <ConformationModal isOpen={conformationModalOpen} onClose={closeConformationModal} action={deleteProduct} />
     </>
   )
 }
