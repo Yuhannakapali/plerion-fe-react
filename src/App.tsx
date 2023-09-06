@@ -1,10 +1,10 @@
 import Table from "./components/Table"
 import Modal from "./components/Modal"
 import { useState, useEffect } from "react"
-import { Product } from "./types/Products";
+import { Product, ProductPayload } from "./types/Products";
 import { actions } from "./types/TableProps";
 import ConfirmationModal from "./components/conformation/ConfirmationModal";
-import { sucessNotify } from "./utils/notification";
+import { sucessNotify, warnNotify } from "./utils/notification";
 import Axios from "./axios";
 
 function App() {
@@ -23,11 +23,22 @@ function App() {
     getProducts()
   }, [])
 
-  const addProduct = async (item: Product) => {
-    await Axios.post("/products", item);
-    sucessNotify("Product has been added sucessfully");
-    setModalOpen(false);
-    getProducts();
+  const addProduct = (item: ProductPayload): Promise<boolean> => {
+    const result = new Promise<boolean>((resolve, reject) => {
+
+      Axios.post("/products", item).then((res) => {
+        console.log("🚀 ~ file: App.tsx:43 ~ addProduct ~ respone:", res)
+        sucessNotify("Product has been added sucessfully");
+        setModalOpen(false);
+        getProducts();
+        resolve(true)
+      }).catch(err => {
+        console.log(err);
+        warnNotify("Unable to add Product")
+        reject(false)
+      });
+    })
+    return result
   }
 
   const openModal = () => setModalOpen(true);
