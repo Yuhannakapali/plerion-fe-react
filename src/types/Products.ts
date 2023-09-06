@@ -12,3 +12,14 @@ export interface ProductPayload extends Product {
     type: string;
   };
 }
+
+export type errorsMessage = {
+  message: string;
+};
+export type errors = {
+  id?: errorsMessage;
+  name?: errorsMessage;
+  description?: errorsMessage;
+  price?: errorsMessage;
+  file?: errorsMessage;
+};
